@@ -4,7 +4,7 @@ from pygame.locals import *
 
 
 class FeiJi(object):
-
+    ''' 飞机类'''
     def __init__(self, screen_temp):
         self.x = 200
         self.y = 250
@@ -17,6 +17,8 @@ class FeiJi(object):
         for bullet in self.bullet_list:
             bullet.display()
             bullet.move()
+            if bullet.judge():
+                self.bullet_list.remove(bullet)
 
     def fire(self):
         self.bullet_list.append(Bullet(self.screen,self.x,self.y))
@@ -34,7 +36,7 @@ class FeiJi(object):
         self.y -= 5
 
 class DiJi(object):
-
+    '''敌机类'''
     def __init__(self, screen_temp):
         self.x = 0
         self.y = 0
@@ -48,6 +50,8 @@ class DiJi(object):
         for bullet in self.bullet_list:
             bullet.display()
             bullet.move()
+            if bullet.judge():
+                self.bullet_list.remove(bullet)
 
     def fire(self):
         self.bullet_list.append(Bullet_2(self.screen,self.x,self.y))
@@ -63,6 +67,7 @@ class DiJi(object):
             self.x -= 1
 
 class Bullet_2(object):
+    '''敌人子弹'''
     def __init__(self, screen_temp, x, y):
         self.x = x+20
         self.y = y+40
@@ -72,9 +77,14 @@ class Bullet_2(object):
         self.screen.blit(self.image,(self.x,self.y))
     def move(self):
         self.y+=3
-
+    def judge(self):
+        if self.y >500:
+            return True
+        else:
+            return False
 
 class Bullet(object):
+    '''子弹类'''
     def __init__(self, screen_temp, x, y):
         self.x = x+34
         self.y = y-5
@@ -84,6 +94,11 @@ class Bullet(object):
         self.screen.blit(self.image,(self.x,self.y))
     def move(self):
         self.y-=5
+    def judge(self):
+        if self.y <0:
+            return True
+        else:
+            return False
 
 def key_control(hero):
         for event in pygame.event.get():
